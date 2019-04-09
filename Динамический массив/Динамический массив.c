@@ -1,24 +1,44 @@
 ﻿#include <stdio.h>
 #include <math.h>
 
-//Вычисление максимума/минимума
-void minax(int* parr, int len) {
-	int maxt = parr[0], mint = parr[0];
+//Вычисление максимума
+int max(int* parr, int len) {
+	int maxt = parr[0];
 	
 	//Работа с массивом
 	for (int i = 1; i < len; i++) {
 		if (parr[i] > maxt) {
 			maxt = parr[i];
 		}
-		else if (parr[i] < mint) {
+	}
+	return maxt;
+}
+//Вычисление минимума
+int min(int* parr, int len) {
+	int mint = parr[0];
+
+	//Работа с массивом
+	for (int i = 1; i < len; i++) {
+		if (parr[i] < mint) {
 			mint = parr[i];
 		}
 	}
-	printf("Maximum - %d\nMinimum - %d\n", mint, maxt);
+	return mint;
 }
 
-//Вычисление среднего и отклонения
-void meams(int* parr, int len) {
+//Вычисление среднего
+float mean(int* parr, int len) {
+	float mean = 0;
+
+	//Расчёт среднего
+	for (int i = 0; i < len; i++) {
+		mean = mean + ((float)(*(parr + i)) / len);
+	}
+
+	return mean;
+}
+//Вычисление отклонения
+float RMS(int* parr, int len) {
 	float sigma = 0, mean = 0;
 	//sigma - квадрат отклонения
 
@@ -32,7 +52,7 @@ void meams(int* parr, int len) {
 		sigma = sigma + ((mean - (*(parr + i)))*(mean - (*(parr + i))) / len);
 	}
 
-	printf("Mean - %f\nRMS - %f\n", mean, sqrt(sigma));
+	return sqrt(sigma);
 }
 
 int main() {
@@ -41,6 +61,8 @@ int main() {
 	do {//Длина массива
 		int len;
 		int* parr;
+		int mint, maxt;
+		float meant, RMSt;
 		printf("Input length: ");
 		scanf_s("%d", &len);
 
@@ -57,11 +79,17 @@ int main() {
 			scanf_s("%d", &parr[i]);
 		}
 
-		minax(parr, len);
+		maxt = max(parr, len);
 
-		meams(parr, len);
+		mint = min(parr, len);
+
+		meant = mean(parr, len);
+		
+		RMSt = RMS(parr, len);
 
 		free(parr);
+
+		printf("Maximum - %d\nMinimum - %d\nMean - %f\nRMS - %f\n", maxt, mint, meant, RMSt);
 
 		//Повтор программы
 		printf("\nDo you wish to restart program? (y/n)\n");
